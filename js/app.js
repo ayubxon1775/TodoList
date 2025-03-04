@@ -32,10 +32,35 @@ function getTime () {
 
   const hour = now.getHours() < 10 ? '0'+ now.getHours():now.getHours()
   const minute = now.getMinutes()< 10 ? '0'+ now.getMinutes():now.getMinutes()
+  const second = now.getSeconds() < 10 ? '0' + now.getSeconds(): now.getSeconds()
 
+  const months = [
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December'
+  ]
+  const month_title = now.getMonth() 
+ 
+  fullDay.textContent = `${date},${months[month_title]},${year}`
+  
+
+    hourEl.textContent = hour
+  minuteEl.textContent = minute
+  secondEl.textContent = second
+
+ 
   return(`${hour}:${minute}, ${date}.${month}.${year}`);
 }
-getTime()
+setInterval(() => {getTime()},1000)
 
 
 // Show todos 
@@ -46,7 +71,7 @@ function showTodos () {
     listGroupTodo.innerHTML += ` <li class="list-group-item d-flex justify-content-between">${item.text}
     <div class="todo-icons"><span class="opacity-50 me-2">${item.time}</span>
       <img src="img/edit.svg" alt="edit icon" width="25" height="25">
-      <img src="img/delete.svg" alt="delete icon" width="25" height="25">
+      <img onclick=(deleteTodo(${index})) src="img/delete.svg" alt="delete icon" width="25" height="25">
     </div>
   </li>`
   })
@@ -83,3 +108,12 @@ formCreate.addEventListener('submit', (e) => {
     showMessage('message-create', 'please, Enter some text...')
   }
 })
+
+function deleteTodo(id) {
+  const deletedTodos = todos.filter((item, index) => {
+    return index !== id
+  })
+  todos = deletedTodos
+  setTodos()
+  showTodos()
+}
